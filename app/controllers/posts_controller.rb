@@ -7,11 +7,13 @@ class PostsController < ApplicationController
   end
 
   def update
+    # byebug
     post = Post.find(params[:id])
-
-    post.update(post_params)
-
-    render json: post
+      post.update!(post_params)
+      render json: post
+    rescue ActiveRecord::RecordInvalid => invalid  
+      render json: {errors: invalid.record.errors}, status: :unprocessable_entity
+      # byebug
   end
 
   private
